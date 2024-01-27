@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/emergency-calls")
-public class EmergencyCallController {
+public class EmergencyCallApiController {
 
 
     /**
@@ -33,7 +33,7 @@ public class EmergencyCallController {
     private final EmergencyCallService emergencyCallService;
 
 
-    public EmergencyCallController(EmergencyCallService emergencyCallService) {
+    public EmergencyCallApiController(EmergencyCallService emergencyCallService) {
         this.emergencyCallService = emergencyCallService;
     }
 

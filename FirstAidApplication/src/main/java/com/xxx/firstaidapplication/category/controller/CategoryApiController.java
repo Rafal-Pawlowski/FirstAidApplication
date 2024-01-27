@@ -1,7 +1,7 @@
-package com.xxx.firstaidapplication.emergency_call.controller;
+package com.xxx.firstaidapplication.category.controller;
 
-import com.xxx.firstaidapplication.emergency_call.domain.model.Category;
-import com.xxx.firstaidapplication.emergency_call.service.CategoryService;
+import com.xxx.firstaidapplication.category.model.Category;
+import com.xxx.firstaidapplication.category.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/emergency-calls/category")
-public class CategoryController {
+@RequestMapping("api/v1/categories")
+public class CategoryApiController {
 
     private final CategoryService categoryService;
 
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryApiController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 

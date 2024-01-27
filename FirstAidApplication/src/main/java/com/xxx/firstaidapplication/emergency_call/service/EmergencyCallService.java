@@ -18,12 +18,12 @@ public class EmergencyCallService {
     }
 
     public List<EmergencyCall> getEmergencyCalls() {
-        return Arrays.asList(new EmergencyCall("Emergency Call 1"), new EmergencyCall("Emergency Call 2"));
+        return Arrays.asList(new EmergencyCall("Emergency Call 1"), new EmergencyCall("Emergency Call 2"), new EmergencyCall("Emergency Call 3"));
     }
 
 
     public EmergencyCall getEmergencyCall(UUID emergencyCallId) {
-        return new EmergencyCall("emergency Call" + emergencyCallId);
+        return new EmergencyCall("Emergency Call " + emergencyCallId);
     }
 
     public EmergencyCall updateEmergencyCall(UUID emergencyCallId, EmergencyCall emergencyCall) {

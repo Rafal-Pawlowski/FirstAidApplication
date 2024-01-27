@@ -1,6 +1,6 @@
-package com.xxx.firstaidapplication.emergency_call.service;
+package com.xxx.firstaidapplication.category.service;
 
-import com.xxx.firstaidapplication.emergency_call.domain.model.Category;
+import com.xxx.firstaidapplication.category.model.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -17,7 +17,10 @@ public class CategoryService {
     }
 
     public List<Category> getCategories() {
-        return Arrays.asList(new Category("Category"), new Category("Category2"));
+        return Arrays.asList(
+                new Category("Category"),
+                new Category("Category2"),
+                new Category("Category3"));
     }
 
 

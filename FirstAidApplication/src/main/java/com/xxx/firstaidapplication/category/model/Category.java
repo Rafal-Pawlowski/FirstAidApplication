@@ -1,4 +1,4 @@
-package com.xxx.firstaidapplication.emergency_call.domain.model;
+package com.xxx.firstaidapplication.category.model;
 
 import java.util.UUID;
 

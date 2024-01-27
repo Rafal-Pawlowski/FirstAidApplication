@@ -20,6 +20,7 @@ public class InstructionService {
     public List<Instruction> getInstructions(UUID emergencyCallId) {
         return Arrays.asList(
                 new Instruction("Instruction"),
+                new Instruction("Instruction 1"),
                 new Instruction("Instruction 2"));
 
     }
