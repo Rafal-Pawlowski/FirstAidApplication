@@ -25,7 +25,7 @@ public class CategoryService {
 
 
     public Category getCategory(UUID categoryId) {
-        return new Category("Category" + categoryId);
+        return new Category("Category " + categoryId);
     }
 
 
