@@ -49,7 +49,7 @@ public class InstructionController {
     @GetMapping("{instruction-id}")
     Instruction getInstruction(@PathVariable("emergency-call-id") UUID emergencyCallId,
                                @PathVariable("instruction-id") UUID instructionId){
-        return instructionService.getInstruction(emergencyCallId, instructionId);
+        return instructionService.getInstruction(instructionId);
     }
 
     @PutMapping("{instruction-id}")
@@ -57,13 +57,13 @@ public class InstructionController {
     Instruction updateInstruction(@PathVariable("instruction-id") UUID instructionId,
                                   @PathVariable("emergency-call-id") UUID emergencyCallId,
                                   @RequestBody Instruction instruction){
-        return instructionService.updateInstruction(instructionId, emergencyCallId, instruction);
+        return instructionService.updateInstruction(instructionId,  instruction);
     }
 
     @DeleteMapping("{instruction-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteInstruction(@PathVariable("instruction-id") UUID instructionId, @PathVariable("emergency-call-id") UUID emergencyCallId){
-        instructionService.deleteInstruction(instructionId, emergencyCallId);
+        instructionService.deleteInstruction(instructionId);
     }
 
 

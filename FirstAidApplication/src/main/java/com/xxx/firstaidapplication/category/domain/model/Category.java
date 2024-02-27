@@ -1,18 +1,30 @@
-package com.xxx.firstaidapplication.category.model;
+package com.xxx.firstaidapplication.category.domain.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
+@Entity
+@Table(name = "categories")
 public class Category {
 
-    private String name;
+    @Id
     private UUID id;
 
+    @NotBlank(message = "{first_aid.validation.name.NotBlank.message}" )
+    private String name;
+
     public Category() {
+        this.id=UUID.randomUUID();
     }
 
     public Category(String name) {
+        this();
         this.name = name;
-        this.id=UUID.randomUUID();
+
     }
 
     public String getName() {

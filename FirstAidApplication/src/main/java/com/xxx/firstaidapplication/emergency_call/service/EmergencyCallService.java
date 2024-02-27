@@ -1,36 +1,57 @@
 package com.xxx.firstaidapplication.emergency_call.service;
 
 import com.xxx.firstaidapplication.emergency_call.domain.model.EmergencyCall;
+import com.xxx.firstaidapplication.emergency_call.domain.repository.EmergencyCallRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class EmergencyCallService {
 
+    private final EmergencyCallRepository emergencyCallRepository;
 
-    public EmergencyCall createEmergencyCall(EmergencyCall emergencyCall) {
-        emergencyCall.setId(UUID.randomUUID());
-
-        return emergencyCall;
+    public EmergencyCallService(EmergencyCallRepository emergencyCallRepository) {
+        this.emergencyCallRepository = emergencyCallRepository;
     }
 
+    @Transactional
+    public EmergencyCall createEmergencyCall(EmergencyCall emergencyCallRequest) {
+        EmergencyCall emergencyCall = new EmergencyCall();
+        emergencyCall.setName(emergencyCallRequest.getName());
+
+        return emergencyCallRepository.save(emergencyCall);
+    }
+
+    @Transactional(readOnly = true)
     public List<EmergencyCall> getEmergencyCalls() {
-        return Arrays.asList(new EmergencyCall("Emergency Call 1"), new EmergencyCall("Emergency Call 2"), new EmergencyCall("Emergency Call 3"));
+        return emergencyCallRepository.findAll();
     }
 
-
+    @Transactional(readOnly = true)
     public EmergencyCall getEmergencyCall(UUID emergencyCallId) {
-        return new EmergencyCall("Emergency Call " + emergencyCallId);
+        return emergencyCallRepository.getById(emergencyCallId);
     }
 
-    public EmergencyCall updateEmergencyCall(UUID emergencyCallId, EmergencyCall emergencyCall) {
-        return emergencyCall;
+    @Transactional
+    public EmergencyCall updateEmergencyCall(UUID emergencyCallId, EmergencyCall emergencyCallRequest) {
+        EmergencyCall emergencyCall = emergencyCallRepository.getById(emergencyCallId);
+        emergencyCall.setName(emergencyCallRequest.getName());
+
+        return emergencyCallRepository.save(emergencyCall);
     }
 
-
+    @Transactional
     public void deleteEmergencyCall(UUID emergencyCallId) {
+        emergencyCallRepository.deleteById(emergencyCallId);
     }
+
+    @Transactional(readOnly = true)
+    public List<EmergencyCall> findAllEmergencyCallsByCategoryId(UUID CategoryId) {
+        return emergencyCallRepository.findAllByCategoryId(CategoryId);
+    }
+
+
 }

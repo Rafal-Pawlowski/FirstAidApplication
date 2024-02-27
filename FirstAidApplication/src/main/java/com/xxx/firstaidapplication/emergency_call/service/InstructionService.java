@@ -1,7 +1,11 @@
 package com.xxx.firstaidapplication.emergency_call.service;
 
+import com.xxx.firstaidapplication.emergency_call.domain.model.EmergencyCall;
 import com.xxx.firstaidapplication.emergency_call.domain.model.Instruction;
+import com.xxx.firstaidapplication.emergency_call.domain.repository.EmergencyCallRepository;
+import com.xxx.firstaidapplication.emergency_call.domain.repository.InstructionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,31 +14,49 @@ import java.util.UUID;
 @Service
 public class InstructionService {
 
-    public Instruction createInstruction(UUID emergencyCallId, Instruction instruction) {
-        instruction.setId(UUID.randomUUID());
+    private final InstructionRepository instructionRepository;
+    private final EmergencyCallRepository emergencyCallRepository;
 
-        return instruction;
-
+    public InstructionService(InstructionRepository instructionRepository, EmergencyCallRepository emergencyCallRepository) {
+        this.instructionRepository = instructionRepository;
+        this.emergencyCallRepository = emergencyCallRepository;
     }
 
+    @Transactional
+    public Instruction createInstruction(UUID emergencyCallId, Instruction instructionRequest) {
+        Instruction instruction = new Instruction();
+        instruction.setName(instructionRequest.getName());
+
+        EmergencyCall emergencyCall = emergencyCallRepository.getById(emergencyCallId);
+        emergencyCall.addInstruction(instruction);
+
+        instructionRepository.save(instruction);
+        emergencyCallRepository.save(emergencyCall);
+
+        return instructionRepository.save(instruction);
+    }
+
+    @Transactional(readOnly = true)
     public List<Instruction> getInstructions(UUID emergencyCallId) {
-        return Arrays.asList(
-                new Instruction("Instruction"),
-                new Instruction("Instruction 1"),
-                new Instruction("Instruction 2"));
-
+        return instructionRepository.findAllByEmergencyCallId(emergencyCallId);
     }
 
-    public Instruction getInstruction(UUID emergencyCallId, UUID instructionId) {
-        return new Instruction("InstructionName " + instructionId);
+    @Transactional(readOnly = true)
+    public Instruction getInstruction(UUID instructionId) {
+        return instructionRepository.getById(instructionId);
+    }
+
+    @Transactional
+    public Instruction updateInstruction(UUID instructionId, Instruction instructionRequest) {
+        Instruction instruction = instructionRepository.getById(instructionId);
+        instruction.setName(instructionRequest.getName());
+
+        return instructionRepository.save(instruction);
     }
 
 
-    public Instruction updateInstruction(UUID instructionId, UUID emergencyCallId, Instruction instruction) {
-        return instruction;
-    }
-
-
-    public void deleteInstruction(UUID instructionId, UUID emergencyCallId) {
+    @Transactional
+    public void deleteInstruction(UUID instructionId) {
+        instructionRepository.deleteById(instructionId);
     }
 }

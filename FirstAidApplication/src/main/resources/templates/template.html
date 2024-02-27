@@ -192,7 +192,7 @@
             <a th:each="category : ${categories}"
                th:text="${category.name}"
                class="nav-item nav-link link-body-emphasis active"
-               href="#">Category</a>
+               th:href="@{'/categories/' + ${category.id}}">Category</a>
 
         </nav>
     </div>

@@ -1,18 +1,38 @@
 package com.xxx.firstaidapplication.emergency_call.domain.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 import java.util.UUID;
 
+@Entity
+@Table(name = "instructions")
 public class Instruction {
 
+    @Id
     private UUID id;
     private String name;
 
+    @ManyToOne
+    private EmergencyCall emergencyCall;
+
     public Instruction() {
+        this.id = UUID.randomUUID();
     }
 
     public Instruction(String name) {
+        this();
         this.name = name;
-        this.id = UUID.randomUUID();
+    }
+
+    public EmergencyCall getEmergencyCall() {
+        return emergencyCall;
+    }
+
+    public void setEmergencyCall(EmergencyCall emergencyCall) {
+        this.emergencyCall = emergencyCall;
     }
 
     public UUID getId() {
