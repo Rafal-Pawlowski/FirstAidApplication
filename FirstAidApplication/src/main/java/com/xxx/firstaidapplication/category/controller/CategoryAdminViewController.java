@@ -63,8 +63,10 @@ public class CategoryAdminViewController {
     }
 
     @GetMapping("{id}/delete")
-    public String deleteView(@PathVariable UUID id) {
+    public String deleteView(@PathVariable UUID id,
+                                RedirectAttributes ra) {
         categoryService.deleteCategory(id);
+        ra.addFlashAttribute("message", Message.info("Kategoria usunięta pomyślnie"));
 
         return "redirect:/admin/categories";
     }
