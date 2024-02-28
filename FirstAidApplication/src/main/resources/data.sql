@@ -1,5 +1,13 @@
 insert into categories(id, name) values
                                      (gen_random_uuid(), 'Oparzenia'),
+                                     (gen_random_uuid(), 'Krwotok'),
+                                     (gen_random_uuid(), 'Rany'),
+                                     (gen_random_uuid(), 'Skręcenie'),
+                                     (gen_random_uuid(), 'Wstrząs urazowy'),
+                                     (gen_random_uuid(), 'Uszkodzenia narządów wewnętrznych'),
+                                     (gen_random_uuid(), 'Zwichnięcie'),
+                                     (gen_random_uuid(), 'Ugryzienia'),
+                                     (gen_random_uuid(), 'Rany postrzałowe'),
                                      (gen_random_uuid(), 'Stłuczenia'),
                                      (gen_random_uuid(), 'Ukąszenia'),
                                      (gen_random_uuid(), 'Zranienia'),

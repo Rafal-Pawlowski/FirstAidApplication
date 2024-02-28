@@ -2,6 +2,8 @@ package com.xxx.firstaidapplication.emergency_call.service;
 
 import com.xxx.firstaidapplication.emergency_call.domain.model.EmergencyCall;
 import com.xxx.firstaidapplication.emergency_call.domain.repository.EmergencyCallRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,4 +56,13 @@ public class EmergencyCallService {
     }
 
 
+    @Transactional(readOnly = true)
+    public Page<EmergencyCall> findTop(PageRequest pageRequest) {
+    return emergencyCallRepository.findTop(pageRequest);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EmergencyCall> findUnanswered(PageRequest pageRequest) {
+        return emergencyCallRepository.findUnanswered(pageRequest);
+    }
 }

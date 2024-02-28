@@ -2,6 +2,8 @@ package com.xxx.firstaidapplication.category.controller;
 
 import com.xxx.firstaidapplication.category.domain.model.Category;
 import com.xxx.firstaidapplication.category.service.CategoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +28,8 @@ public class CategoryApiController {
     }
 
     @GetMapping
-    List<Category> getCategories(){
-        return categoryService.getCategories();
+    Page<Category> getCategories(Pageable pageable){
+        return categoryService.getCategories(pageable);
     }
 
     @GetMapping("{category-id}")

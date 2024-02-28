@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                             <li class="breadcrumb-item active">Categories</li>
                         </ol>
                     </div><!-- /.col -->
@@ -41,18 +41,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Responsive Hover Table</h3>
+                        <h3 class="card-title" th:text="'Categories[count: '+${categoriesPage.totalElements} + ${#strings.isEmpty(search) ? '' : ', search: '+search} +']'">Categories</h3>
 
                         <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                            <form>
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input th:value="${search}" type="text" name="s" class="form-control float-right" placeholder="Search">
 
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <!-- /.card-header -->
@@ -60,12 +62,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <table class="table table-hover text-nowrap">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>#</th>
+                                <th><a th:class="'sort-' + ${reverseSort}"
+                                       th:href="@{'/admin/categories' (s=${search}, field='name', direction=${reverseSort})}">Name</a></th>
                                 <th>#</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="category : ${categories}">
+                            <tr th:each="category, it : ${categoriesPage.content}">
+                                <td th:text="${it.index}+1"></td>
                                 <td th:text="${category.name}"></td>
                                 <td>
                                     <a th:href="@{'/categories/'+${category.id}}" class="btn btn-primary btn-sm">
@@ -81,6 +86,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </tr>
                             </tbody>
                         </table>
+
+                        <!-- pagination -->
+                        <div class ="card-footer clearfix">
+                            <ul class="pagination pagination-sm m-0 float-right"
+                                th:if="${categoriesPage.totalPages >0}">
+                                <li th:each="pageNumber : ${pageNumbers}" class="page-item">
+                                    <a class="page-link"
+                                       th:href="@{'/admin/categories'(size=${categoriesPage.size}, page=${pageNumber}-1)}"
+                                       th:text="${pageNumber}"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.pagination -->
+
                     </div>
                     <!-- /.card-body -->
                 </div>

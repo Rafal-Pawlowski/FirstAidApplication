@@ -2,6 +2,8 @@ package com.xxx.firstaidapplication.category.service;
 
 import com.xxx.firstaidapplication.category.domain.model.Category;
 import com.xxx.firstaidapplication.category.domain.repository.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +29,16 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
+    public Page<Category> getCategories(Pageable pageable) {
+        return getCategories(null, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<Category> getCategories(String search, Pageable pageable) {
+        if(search==null){
+            return categoryRepository.findAll(pageable);
+        } else {
+            return categoryRepository.findAllByNameContainingIgnoreCase(search, pageable);
+        }
     }
 
     @Transactional(readOnly = true)

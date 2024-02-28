@@ -1,45 +1,45 @@
 package com.xxx.firstaidapplication.emergency_call.controller;
 
+import com.xxx.firstaidapplication.FirstAidConfiguration;
 import com.xxx.firstaidapplication.category.service.CategoryService;
+import com.xxx.firstaidapplication.common.controller.ControllerUtils;
+import com.xxx.firstaidapplication.common.controller.FirstAidCommonViewController;
 import com.xxx.firstaidapplication.emergency_call.domain.model.EmergencyCall;
 import com.xxx.firstaidapplication.emergency_call.service.EmergencyCallService;
 import com.xxx.firstaidapplication.emergency_call.service.InstructionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/emergency-calls")
-public class EmergencyCallViewController {
+@RequiredArgsConstructor
+public class EmergencyCallViewController extends FirstAidCommonViewController {
 
     private final EmergencyCallService emergencyCallService;
     private final InstructionService instructionService;
     private final CategoryService categoryService;
-
-    public EmergencyCallViewController(EmergencyCallService emergencyCallService, InstructionService instructionService, CategoryService categoryService) {
-        this.emergencyCallService = emergencyCallService;
-        this.instructionService = instructionService;
-        this.categoryService = categoryService;
-    }
+    private final FirstAidConfiguration firstAidConfiguration;
 
     @GetMapping
     public String indexView(Model model) {
         model.addAttribute("emergencyCalls", emergencyCallService.getEmergencyCalls());
-        model.addAttribute("categories", categoryService.getCategories());
+        addGlobalAttributes(model);
 
-        return "emergency-call/index";
+        return "index/index";
     }
 
     @GetMapping("{id}")
     public String singleView(Model model, @PathVariable UUID id) {
         model.addAttribute("emergencyCall", emergencyCallService.getEmergencyCall(id));
         model.addAttribute("instructions", instructionService.getInstructions(id));
-        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
 
         return "emergency-call/single";
     }
@@ -58,5 +58,33 @@ public class EmergencyCallViewController {
         return "redirect:/emergency-calls";
     }
 
+    @GetMapping("top")
+    public String hotView(
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            Model model) {
+        PageRequest pageRequest = PageRequest.of(page-1, firstAidConfiguration.getPagingPageSize());
+        Page<EmergencyCall> emergencyCallsPage = emergencyCallService.findTop(pageRequest);
 
+        model.addAttribute("emergencyCallsPage", emergencyCallsPage);
+        ControllerUtils.paging(model,emergencyCallsPage);
+        addGlobalAttributes(model);
+
+        return "emergency-call/index";
+    }
+
+
+
+    @GetMapping("unanswered")
+    public String unansweredView(
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            Model model) {
+        PageRequest pageRequest = PageRequest.of(page-1, firstAidConfiguration.getPagingPageSize());
+        Page<EmergencyCall> emergencyCallsPage = emergencyCallService.findUnanswered(pageRequest);
+
+        model.addAttribute("emergencyCallsPage", emergencyCallsPage);
+        ControllerUtils.paging(model,emergencyCallsPage);
+        addGlobalAttributes(model);
+
+        return "emergency-call/index";
+    }
 }
