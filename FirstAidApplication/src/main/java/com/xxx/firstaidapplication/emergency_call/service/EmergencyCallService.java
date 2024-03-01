@@ -4,6 +4,7 @@ import com.xxx.firstaidapplication.emergency_call.domain.model.EmergencyCall;
 import com.xxx.firstaidapplication.emergency_call.domain.repository.EmergencyCallRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,12 +58,16 @@ public class EmergencyCallService {
 
 
     @Transactional(readOnly = true)
-    public Page<EmergencyCall> findTop(PageRequest pageRequest) {
-    return emergencyCallRepository.findTop(pageRequest);
+    public Page<EmergencyCall> findTop(Pageable pageable) {
+    return emergencyCallRepository.findTop(pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<EmergencyCall> findUnanswered(PageRequest pageRequest) {
-        return emergencyCallRepository.findUnanswered(pageRequest);
+    public Page<EmergencyCall> findUnanswered(Pageable pageable) {
+        return emergencyCallRepository.findUnanswered(pageable);
+    }
+
+    public Page<EmergencyCall> findByQuery(String query, Pageable pageable) {
+        return emergencyCallRepository.findByQuery(query, pageable);
     }
 }
